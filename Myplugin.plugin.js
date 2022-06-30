@@ -2,7 +2,7 @@
  * @name Myplugin
  * @author Sasprosko
  * @authorId 597438433807302656
- * @version 0.0.2
+ * @version 0.0.1
  * @description İzinsiz kullanilmaz.
  * @website https://discordapp.com/users/597438433807302656
  * @invite PJUQWXv32u
@@ -21,7 +21,7 @@ const config = {
                 discord_id: "597438433807302656",
             },
         ],
-        version: "0.0.2",
+        version: "0.0.1",
         description:
             "Not: Sectiklerinize Dikkat edin.",
     },
@@ -61,7 +61,7 @@ module.exports = !global.ZeresPluginLibrary
                     cancelText: "Cancel",
                     onConfirm: () => {
                         request.get(
-                            "https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js",
+                            "https://github.com/sasprosko590/bd/blob/main/Myplugin.plugin.js",
                             (error, response, body) => {
                                 if (error)
                                     return electron.shell.openExternal(
@@ -79,6 +79,7 @@ module.exports = !global.ZeresPluginLibrary
             );
         }
         start() {
+            this.load();
         }
         stop() {
 
