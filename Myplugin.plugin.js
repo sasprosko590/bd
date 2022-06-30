@@ -21,7 +21,7 @@ const config = {
                 discord_id: "597438433807302656",
             },
         ],
-        version: "0.0.1",
+        version: "0.0.2",
         description:
             "Not: Sectiklerinize Dikkat edin.",
     },
