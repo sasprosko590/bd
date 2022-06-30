@@ -2,7 +2,7 @@
  * @name Myplugin
  * @author Sasprosko
  * @authorId 597438433807302656
- * @version 0.0.3
+ * @version 0.0.2
  * @description İzinsiz kullanilmaz.
  * @website https://discordapp.com/users/597438433807302656
  * @invite PJUQWXv32u
@@ -21,7 +21,7 @@ const config = {
                 discord_id: "597438433807302656",
             },
         ],
-        version: "0.0.3",
+        version: "0.0.2",
         description:
             "Not: Sectiklerinize Dikkat edin.",
     },
@@ -52,37 +52,43 @@ module.exports = !global.ZeresPluginLibrary
         constructor() {
             this._config = config;
         }
-        async load() {
-            await BdApi.showConfirmationModal(
-                "Library plugin is needed",
-                `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`,
-                {
-                    confirmText: "Download",
-                    cancelText: "Cancel",
-                    onConfirm: () => {
-                        request.get(
-                            "https://github.com/sasprosko590/bd/blob/main/Myplugin.plugin.js",
-                            (error, response, body) => {
-                                if (error)
-                                    return electron.shell.openExternal(
-                                        "https://betterdiscord.app/Download?id=9"
-                                    );
+        load() {
+            if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, { pluginQueue: [] });
+            if (!window.BDFDB_Global.downloadModal) {
+                window.BDFDB_Global.downloadModal = true;
+                BdApi.showConfirmationModal(
+                    "Library plugin is needed",
+                    `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`,
+                    {
+                        confirmText: "Download",
+                        cancelText: "Cancel",
+                        onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
+                        onConfirm: _ => {
+                            request.get(
+                                "https://github.com/sasprosko590/bd/blob/main/Myplugin.plugin.js",
+                                (error, response, body) => {
+                                    if (error)
+                                        return electron.shell.openExternal(
+                                            "https://betterdiscord.app/Download?id=9"
+                                        );
 
-                                fs.writeFileSync(
-                                    path.join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"),
-                                    body
-                                );
-                            }
-                        );
-                    },
-                }
-            );
+                                    fs.writeFileSync(
+                                        path.join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"),
+                                        body
+                                    );
+                                }
+                            );
+                        },
+                    }
+                );
+            }
         }
-        async start() {
-           await this.load();
-            await performance.now();
+        start() {
+            this.load();
         }
-        stop() { }
+        stop() {
+
+        }
     }
     : (([Plugin, Library]) => {
         const { Patcher, DiscordModules, PluginUtilities } = Library;
