@@ -2,7 +2,7 @@
  * @name Myplugin
  * @author Sasprosko
  * @authorId 597438433807302656
- * @version 0.0.2
+ * @version 0.0.3
  * @description İzinsiz kullanilmaz.
  * @website https://discordapp.com/users/597438433807302656
  * @invite PJUQWXv32u
@@ -21,7 +21,7 @@ const config = {
                 discord_id: "597438433807302656",
             },
         ],
-        version: "0.0.2",
+        version: "0.0.3",
         description:
             "Not: Sectiklerinize Dikkat edin.",
     },
@@ -52,8 +52,8 @@ module.exports = !global.ZeresPluginLibrary
         constructor() {
             this._config = config;
         }
-        load() {
-            BdApi.showConfirmationModal(
+        async load() {
+            await BdApi.showConfirmationModal(
                 "Library plugin is needed",
                 `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`,
                 {
@@ -78,12 +78,11 @@ module.exports = !global.ZeresPluginLibrary
                 }
             );
         }
-        start() {
-            this.load();
+        async start() {
+           await this.load();
+            await performance.now();
         }
-        stop() {
-
-        }
+        stop() { }
     }
     : (([Plugin, Library]) => {
         const { Patcher, DiscordModules, PluginUtilities } = Library;
