@@ -53,35 +53,35 @@ module.exports = !global.ZeresPluginLibrary
             this._config = config;
         }
         load() {
-            if (!window.BDFDB_Global || !Array.isArray(window.BDFDB_Global.pluginQueue)) window.BDFDB_Global = Object.assign({}, window.BDFDB_Global, { pluginQueue: [] });
-            if (!window.BDFDB_Global.downloadModal) {
-                window.BDFDB_Global.downloadModal = true;
-                BdApi.showConfirmationModal(
-                    "Library plugin is needed",
-                    `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`,
-                    {
-                        confirmText: "Download",
-                        cancelText: "Cancel",
-                        onCancel: _ => {delete window.BDFDB_Global.downloadModal;},
-                        onConfirm: _ => {
-                            request.get(
-                                "https://github.com/sasprosko590/bd/blob/main/Myplugin.plugin.js",
-                                (error, response, body) => {
-                                    if (error)
-                                        return electron.shell.openExternal(
-                                            "https://betterdiscord.app/Download?id=9"
-                                        );
-
-                                    fs.writeFileSync(
-                                        path.join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"),
-                                        body
+            BdApi.showConfirmationModal(
+                "Library Missing",
+                `The library plugin needed for ${config.info.name} is missing. Please click Download Now to install it.`,
+                {
+                    confirmText: "Download Now",
+                    cancelText: "Cancel",
+                    onConfirm: () => {
+                        require("request").get(
+                            "https://rauenzi.github.io/BDPluginLibrary/release/0PluginLibrary.plugin.js",
+                            async (error, response, body) => {
+                                if (error)
+                                    return require("electron").shell.openExternal(
+                                        "https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js"
                                     );
-                                }
-                            );
-                        },
-                    }
-                );
-            }
+                                await new Promise((r) =>
+                                    require("fs").writeFile(
+                                        require("path").join(
+                                            BdApi.Plugins.folder,
+                                            "0PluginLibrary.plugin.js"
+                                        ),
+                                        body,
+                                        r
+                                    )
+                                );
+                            }
+                        );
+                    },
+                }
+            );
         }
         start() {
             this.load();
