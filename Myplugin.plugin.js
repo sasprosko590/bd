@@ -2,7 +2,7 @@
  * @name Myplugin
  * @author Sasprosko
  * @authorId 597438433807302656
- * @version 0.0.1
+ * @version 0.0.2
  * @description İzinsiz kullanilmaz.
  * @website https://discordapp.com/users/597438433807302656
  * @invite PJUQWXv32u
